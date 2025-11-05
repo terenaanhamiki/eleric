@@ -5,7 +5,6 @@ import { defineConfig, type ViteDevServer } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import * as dotenv from 'dotenv';
 
-// Load environment variables from multiple files
 dotenv.config({ path: '.env.local' });
 dotenv.config({ path: '.env' });
 dotenv.config();
@@ -24,7 +23,6 @@ export default defineConfig((config) => {
         'node:crypto', 'node:url', 'node:stream', 'node:util', 'node:zlib', 'node:path', 'node:module', 'node:fs', 'node:os', 'node:http', 'node:https', 'node:buffer', 'node:events', 'node:assert', 'node:child_process'
       ],
       noExternal: ['@supabase/supabase-js'],
-
     },
     resolve: {
       extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json'],
@@ -57,6 +55,12 @@ export default defineConfig((config) => {
           },
         },
       },
+    },
+    server: {
+      allowedHosts: [
+        'eleric-production.up.railway.app', // ✅ Add your Railway domain here
+        'localhost',
+      ],
     },
     plugins: [
       remixVitePlugin({
@@ -95,7 +99,7 @@ export default defineConfig((config) => {
         '**/cypress/**',
         '**/.{idea,git,cache,output,temp}/**',
         '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
-        '**/tests/preview/**', // Exclude preview tests that require Playwright
+        '**/tests/preview/**',
       ],
     },
   };
@@ -104,23 +108,20 @@ export default defineConfig((config) => {
 function chrome129IssuePlugin() {
   return {
     name: 'chrome129IssuePlugin',
-    configureServer(server: ViteDevServer) {
+    configureServer(server) {
       server.middlewares.use((req, res, next) => {
         const raw = req.headers['user-agent']?.match(/Chrom(e|ium)\/([0-9]+)\./);
 
         if (raw) {
           const version = parseInt(raw[2], 10);
-
           if (version === 129) {
             res.setHeader('content-type', 'text/html');
             res.end(
               '<body><h1>Please use Chrome Canary for testing.</h1><p>Chrome 129 has an issue with JavaScript modules & Vite local development, see <a href="https://github.com/stackblitz/bolt.new/issues/86#issuecomment-2395519258">for more information.</a></p><p><b>Note:</b> This only impacts <u>local development</u>. `pnpm run build` and `pnpm run start` will work fine in this browser.</p></body>',
             );
-
             return;
           }
         }
-
         next();
       });
     },
