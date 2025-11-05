@@ -98,3 +98,6 @@ ENV VITE_LOG_LEVEL=${VITE_LOG_LEVEL} \
 
 RUN mkdir -p /app/run
 CMD ["pnpm", "run", "dev", "--host"]
+
+# Default to production stage
+FROM bolt-ai-production

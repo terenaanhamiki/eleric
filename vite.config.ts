@@ -37,6 +37,8 @@ export default defineConfig((config) => {
     },
     build: {
       target: 'esnext',
+      outDir: 'build',
+      emptyOutDir: true,
       commonjsOptions: {
         transformMixedEsModules: true,
         ignore: ['@remix-run/web-fetch'],
@@ -57,8 +59,10 @@ export default defineConfig((config) => {
       },
     },
     server: {
+      host: true,
+      port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
       allowedHosts: [
-        'eleric-production.up.railway.app', // ✅ Add your Railway domain here
+        'eleric-production.up.railway.app',
         'localhost',
       ],
     },
