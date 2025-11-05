@@ -14,13 +14,7 @@ export default defineConfig((config) => {
       exclude: ['@remix-run/web-fetch', '@remix-run/node'],
     },
     ssr: {
-      external: [
-        '@remix-run/web-fetch',
-        '@remix-run/node',
-        'crypto', 'url', 'stream', 'util', 'zlib', 'path', 'module', 'fs', 'os', 'http', 'https', 'buffer', 'events', 'assert', 'child_process',
-        'node:crypto', 'node:url', 'node:stream', 'node:util', 'node:zlib', 'node:path', 'node:module', 'node:fs', 'node:os', 'node:http', 'node:https', 'node:buffer', 'node:events', 'node:assert', 'node:child_process'
-      ],
-      noExternal: ['@supabase/supabase-js'],
+      noExternal: true,
     },
     resolve: {
       extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json'],
