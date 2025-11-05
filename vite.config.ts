@@ -11,7 +11,6 @@ dotenv.config();
 export default defineConfig((config) => {
   return {
     optimizeDeps: {
-      include: ['react-dom/server', 'scheduler'],
       exclude: ['@remix-run/web-fetch', '@remix-run/node'],
     },
     ssr: {
@@ -36,24 +35,9 @@ export default defineConfig((config) => {
     },
     build: {
       target: 'esnext',
-      commonjsOptions: {
-        transformMixedEsModules: true,
-        ignore: ['@remix-run/web-fetch'],
-      },
       sourcemap: false,
-      minify: 'esbuild',
-      chunkSizeWarningLimit: 2000,
-      rollupOptions: {
-        output: {
-          manualChunks: (id) => {
-            if (id.includes('node_modules')) {
-              if (id.includes('shiki')) return 'shiki';
-              if (id.includes('@splinetool') || id.includes('three')) return 'spline';
-              if (id.includes('@codemirror') || id.includes('codemirror')) return 'codemirror';
-            }
-          },
-        },
-      },
+      minify: false,
+      chunkSizeWarningLimit: 5000,
     },
     server: {
       host: true,
