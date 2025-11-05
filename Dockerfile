@@ -65,8 +65,9 @@ EXPOSE 5173
 HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=5 \
   CMD curl -fsS http://localhost:5173/ || exit 1
 
-# Start the production server directly
-CMD ["node_modules/.bin/remix-serve", "build/server/index.js"]
+# Copy and use custom server script
+COPY server.js /app/server.js
+CMD ["node", "server.js"]
 
 
 # ---- development stage ----
