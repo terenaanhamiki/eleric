@@ -1,5 +1,4 @@
 import { vitePlugin as remixVitePlugin } from '@remix-run/dev';
-import { vercelPreset } from '@vercel/remix/vite';
 import UnoCSS from 'unocss/vite';
 import { defineConfig, type ViteDevServer } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -66,7 +65,6 @@ export default defineConfig((config) => {
     },
     plugins: [
       remixVitePlugin({
-        presets: [vercelPreset()],
         future: {
           v3_fetcherPersist: true,
           v3_relativeSplatPath: true,

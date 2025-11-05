@@ -49,9 +49,10 @@ ENV NODE_ENV=production
 ENV PORT=5173
 ENV HOST=0.0.0.0
 
-# Install curl for healthchecks
+# Install curl and enable pnpm
 RUN apt-get update && apt-get install -y --no-install-recommends curl \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
+  && corepack enable && corepack prepare pnpm@9.15.9 --activate
 
 # Copy built files and production dependencies
 COPY --from=build /app/build /app/build
