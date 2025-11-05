@@ -37,8 +37,6 @@ export default defineConfig((config) => {
     },
     build: {
       target: 'esnext',
-      outDir: 'build',
-      emptyOutDir: true,
       commonjsOptions: {
         transformMixedEsModules: true,
         ignore: ['@remix-run/web-fetch'],
