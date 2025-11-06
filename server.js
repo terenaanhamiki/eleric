@@ -1,4 +1,4 @@
-import { createRequestHandler } from '@remix-run/node';
+import { createRequestHandler } from '@remix-run/express';
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -16,27 +16,17 @@ app.get('/health', (req, res) => {
 });
 
 // Serve static files
-app.use(express.static(join(__dirname, 'build/client')));
+app.use(express.static(join(__dirname, 'build/client'), { maxAge: '1h' }));
 
 // Handle Remix requests
-let build;
-try {
-  build = await import('./build/server/index.js');
-  if (!build || !build.default) {
-    throw new Error('Build manifest is empty');
-  }
-} catch (error) {
-  console.error('Failed to load Remix build:', error);
-  process.exit(1);
-}
-
-const requestHandler = createRequestHandler({ 
-  build: build.default || build 
-});
-
-app.all('*', requestHandler);
+app.all(
+  '*',
+  createRequestHandler({
+    build: await import('./build/server/index.js'),
+    mode: process.env.NODE_ENV,
+  })
+);
 
 app.listen(PORT, HOST, () => {
-  console.log(`Server running on http://${HOST}:${PORT}`);
-  console.log('Build manifest loaded successfully');
+  console.log(`✅ Server running on http://${HOST}:${PORT}`);
 });
