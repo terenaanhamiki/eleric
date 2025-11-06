@@ -1,5 +1,5 @@
 [build]
-builder = "NIXPACKS"
+builder = "DOCKERFILE"
 buildCommand = "npm install -g pnpm && pnpm install --no-frozen-lockfile && pnpm run build"
 
 [deploy]
