@@ -21,6 +21,9 @@ COPY . .
 # Build the app
 RUN NODE_OPTIONS=--max-old-space-size=8192 pnpm run build
 
+# Verify build output
+RUN ls -la build/ && ls -la build/server/ || echo "Build failed - no output"
+
 # Set environment
 ENV NODE_ENV=production
 ENV PORT=5173

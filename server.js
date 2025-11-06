@@ -19,11 +19,24 @@ app.get('/health', (req, res) => {
 app.use(express.static(join(__dirname, 'build/client')));
 
 // Handle Remix requests
-const build = await import('./build/server/index.js');
-const requestHandler = createRequestHandler({ build });
+let build;
+try {
+  build = await import('./build/server/index.js');
+  if (!build || !build.default) {
+    throw new Error('Build manifest is empty');
+  }
+} catch (error) {
+  console.error('Failed to load Remix build:', error);
+  process.exit(1);
+}
+
+const requestHandler = createRequestHandler({ 
+  build: build.default || build 
+});
 
 app.all('*', requestHandler);
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running on http://${HOST}:${PORT}`);
+  console.log('Build manifest loaded successfully');
 });
