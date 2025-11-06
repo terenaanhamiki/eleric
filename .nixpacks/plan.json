@@ -1,0 +1,18 @@
+{
+  "phases": {
+    "install": {
+      "cmds": [
+        "npm install -g corepack@0.24.1 && corepack enable",
+        "pnpm install --no-frozen-lockfile"
+      ]
+    },
+    "build": {
+      "cmds": [
+        "NODE_OPTIONS=--max-old-space-size=8192 pnpm run build"
+      ]
+    }
+  },
+  "start": {
+    "cmd": "node server.js"
+  }
+}
