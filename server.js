@@ -10,6 +10,11 @@ const app = express();
 const PORT = process.env.PORT || 5173;
 const HOST = process.env.HOST || '0.0.0.0';
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 // Serve static files
 app.use(express.static(join(__dirname, 'build/client')));
 
